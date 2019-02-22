@@ -1,5 +1,4 @@
 {
-    "server_port": 8080,
-    "socket_port": 3210,
-    "pages_path": "./web_content"
+    "port": 8080,
+    "pagespath": "./web_content"
 }
