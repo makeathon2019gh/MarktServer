@@ -30,6 +30,7 @@ console.log(`Server running on port ${config.port}`);
 var webSocket = initWebSocket(httpServer);
 console.log(`Websocket started`);
 
+// TODO REMOVE; test only
 console.log("http://localhost:8080/?token=" + carts["testWagen"].ready())
 
 
