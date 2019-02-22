@@ -14,8 +14,10 @@ var cartlist = require('./cartlist.json');
 
 /* All carts with their UUID as key and a object containing their properties.
  * Said object contains:
+ * - client secret
  * - auth token
  * - socket connection
+ * - some functions {see initCarts()}
  */
 var carts = [];
 
@@ -58,7 +60,7 @@ function initCarts(){
             checkout: function() { // Is called as the cart reaches the checkout, kicking the user out and setting the cart to autopilot
                 return this.clearToken();
             },
-            ready: function() { // Gets triggert when the cart reaches its autopilot destination and being ready to be used
+            ready: function() { // Gets triggert when the cart reaches its autopilot destination and is ready to be used
                 return this.newToken();
             }
         };
@@ -99,6 +101,7 @@ function initWebServer(port, pagespath) {
             }
         }
 
+        // Redirects if a not authenticated user tries to use auth-only pages
         if(!operating && !reqpath.includes("/noauth")) httpUtils.redirect(res, '/noauth');
     
         // Reading the requested file or - if it doesnot exist - 404.html
