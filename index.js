@@ -1,12 +1,14 @@
-var http = require('http');
-var fs = require('fs');
-var mime = require('mime-types');
-var url = require('url');
+const http = require('http');
+const fs = require('fs');
+const mime = require('mime-types');
+const url = require('url');
+const readline = require('readline');
 
 var WebSocketServer = require('websocket').server;
 
 var httpUtils = require('./httpUtils');
 var tokengen = require('./tokengen');
+var logic = require('./logic');
 var config = require('./config.json');
 var cartlist = require('./cartlist.json');
 
@@ -20,6 +22,7 @@ var cartlist = require('./cartlist.json');
  * - some functions {see initCarts()}
  */
 var carts = [];
+exports.carts = carts;
 
 
 
@@ -31,6 +34,8 @@ console.log(`Server running on port ${config.port}`);
 
 var webSocket = initWebSocket(httpServer);
 console.log(`Websocket started`);
+
+initReadline();
 
 // TODO REMOVE; test only
 console.log("http://localhost:8080/?token=" + carts["testWagen"].ready())
@@ -44,6 +49,7 @@ function initCarts(){
             clientsecret: c.secret,
             authtoken: '',
             socketconnection: null,
+            userconnection: null,
             newToken: function() { // Assigns this cart a new auth token, kicking out all connected devices
                 this.authtoken = tokengen.make();
                 this.syncToken();
@@ -129,32 +135,44 @@ function initWebSocket(server) {
     webSocket.on('request', req => {
         var connection = req.accept(null, req.origin);
 
-        onWebsocketUserConnect(connection);
+        logic.onWebsocketUserConnect(connection);
 
         connection.on('message', message => {
             if (message.type !== 'utf8') return;
-            onWebsocketMessage(message, connection);
+            logic.onWebsocketMessage(message.utf8Data, connection);
         });
 
         connection.on('close', connection => {
-            onWebsocketUserDisconnect(connection);
+            logic.onWebsocketUserDisconnect(connection);
         });
     });
 
     return webSocket;
 }
 
-/** Handles incoming websocket messages */
-function onWebsocketMessage(message, connection) {
-
-}
-
-/** Handles user disconnecting */
-function onWebsocketUserConnect(connection) {
-
-}
-
-/** Handles user disconnecting */
-function onWebsocketUserDisconnect(connection) {
-
+/** Initialates readline in order to listen to console input */
+function initReadline(){
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    rl.on('line', (input) => {
+        try{
+            if (input.startsWith('c')) { // Message to cart
+                var name = input.split(' ')[1];
+                var c = carts[name];
+                if(c.socketconnection == null) return;
+                c.socketconnection.send(input.substring(3 + c.name.length));
+            } else if (input.startsWith('u')) { // Message to user
+                var name = input.split(' ')[1];
+                var c = carts[name];
+                if(c.userconnection == null) return;
+                c.userconnection.send(input.substring(3 + c.name.length));
+            } else {
+                console.log('Invalid syntax. Use <c/u> <cartname> <message>');
+            }
+        } catch (e) {
+            console.log("An error occured whilst processing your input!");
+        }
+    });
 }

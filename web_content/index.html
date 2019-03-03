@@ -1,1 +1,41 @@
-Authenticated, yay!
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Shopping Cart</title>
+    <meta name="theme-color" content="#222428" id="metacolor" />
+    <link rel="icon" href="#TODO">
+
+    <meta 
+     name='viewport' 
+     content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' 
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <link href="style.css" rel="stylesheet">
+    <script src="script.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app-mount">
+        <div id="turn-phone">
+            <i class="fas fa-sync-alt"></i>
+            <p>Bitte Smartphone drehen!</p>
+        </div>
+        <div id="loading">
+            <i class="fas fa-spinner fa-pulse"></i>
+            <p id="loading-status">Laden...</p>
+        </div>
+        <div id="error">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p id="loading-status">Ein Fehler ist aufgetreten!</p>
+        </div>
+        <div id="content">
+
+            <button id="break" class="continue" onclick="stop()">Weiter</div>
+        </div>
+    </div>
+</body>
+</html>
