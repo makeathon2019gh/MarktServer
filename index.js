@@ -108,7 +108,7 @@ function initWebServer(port, pagespath) {
         }
 
         // Redirects if a not authenticated user tries to use auth-only pages
-        if(!operating && !reqpath.includes("/noauth")) httpUtils.redirect(res, '/noauth');
+        if(!operating && !(reqpath.includes('/noauth') || reqpath.includes('/done'))) httpUtils.redirect(res, '/noauth');
     
         // Reading the requested file or - if it doesnot exist - 404.html
         var path = pagespath + reqpath;

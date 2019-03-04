@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Bier",
+        "id": "bier",
+        "icon": "beer",
+        "location": "TODO",
+        "amount": 30,
+        "alert": "new/few/none"
+    }
+]

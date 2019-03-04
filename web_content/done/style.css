@@ -1,0 +1,83 @@
+*{
+    --background: #222428;
+    --break-button: #cf4419;
+    --break-button-font: #491606;
+    --continue-button: #19cf89;
+    --continue-button-font: #06493a;
+    --text: #eeeeee;
+}
+
+a, abbr, acronym, address, applet, big, blockquote, body, button, caption, cite, code, dd, del, dfn, div, dl, dt, em, fieldset, form, h1, h2, h3, h4, h5, h6, html, iframe, img, input, ins, kbd, label, legend, li, object, ol, p, pre, q, s, samp, small, span, strike, strong, sub, sup, table, tbody, td, tfoot, th, thead, tr, tt, ul, var {
+    border: 0;
+    font-family: inherit;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    vertical-align: baseline;
+} 
+
+*::-webkit-scrollbar{ width: 6px; }
+*::-webkit-scrollbar-track{ background-color: transparent; }
+*::-webkit-scrollbar-thumb{ background: rgba(128, 128, 128, 0.2); border-radius: 100px; }
+*::-webkit-scrollbar-thumb:hover{ background: rgba(128, 128, 128, 0.6); }
+
+/*
+ *
+ */
+
+body {
+    background: var(--background);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#app-mount,
+#content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*
+ *
+ */
+
+#content{
+    color: var(--text);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+    font-size: 4vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#content>*{
+    text-align: center;
+}
+
+#content>i{
+    font-size: 12vh;
+}
+
+#content>p{
+    max-width: 80vw;
+    padding-top: 100px;
+}
+
+#content>p.small{
+    padding-top: 30px;
+    font-size: 2vh;
+    opacity: .7;
+}

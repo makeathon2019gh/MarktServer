@@ -1,14 +1,24 @@
-// Client -> Server
+// Server -> Client
 const CART_DRIVING = 'CART_DRIVING';
 const DONE = 'DONE';
 const MESSAGE = 'MESSAGE';
+const AUTH_STATUS = 'AUTH_STATUS';
+const NEW_LOGIN = 'NEW_LOGIN';
 
-// Server -> Client
+// Client -> Server
+const AUTH = 'AUTH';
 const GOTO = 'GOTO';
 const BREAK = 'BREAK';
 const CONTINUE = 'CONTINUE';
 
+//
 
+window.getCookie = function(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
+
+//
 
 var socket;
 
@@ -17,6 +27,8 @@ $(()=>{
     socket = initSocket();
 });
 
+//
+
 function initSocket(reconnect = false){
     window.WebSocket = window.WebSocket || window.MozWebSocket;
 
@@ -24,8 +36,8 @@ function initSocket(reconnect = false){
     var connection = new WebSocket(`ws://${socketUrl}`);
 
     connection.onopen = function () {
-        setTimeout(()=>$('#loading-status').html('Verbunden!'), 100);
-        setTimeout(()=>$('#content').addClass('show'), 300);
+        $('#loading-status').html('Authentifizieren...');
+        connection.send(AUTH + '=' + window.getCookie('auth'));
     };
 
     connection.onerror = function (error) {
@@ -45,11 +57,26 @@ function initSocket(reconnect = false){
                 if(data == 'true') cContinue(false);
                 else cBreak(false);
                 break;
-            case DONE:
 
+            case DONE:
+                window.location = './done';
                 break;
+
             case MESSAGE:
                 alert(data);
+                break;
+
+            case AUTH_STATUS:
+                if(data == 'success'){
+                    $('#loading-status').html('Authentifiziert!');
+                    $('#content').addClass('show');
+                } else {
+                    $('#loading-status').html('Authentifizierung fehlgeschlagen!');
+                }
+                break;  
+
+            case NEW_LOGIN:
+                window.location = './newlogin';
                 break;
         }
     };

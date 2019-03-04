@@ -39,7 +39,8 @@ exports.onWebsocketMessage = (message, connection) => {
         // From carts
 
         case LOGIN:
-            for (var c of index.carts) {
+            for (var id in index.carts) {
+                var c = index.carts[id];
                 if (c.clientsecret == data)
                     c.socketconnection = connection;
             }
@@ -65,7 +66,8 @@ exports.onWebsocketMessage = (message, connection) => {
 
         case AUTH:
             var success = false;
-            for (var c of index.carts) {
+            for (var id in index.carts) {
+                var c = index.carts[id];
                 if (c.authtoken == data) {
                     if(c.userconnection != null) c.userconnection.send(NEW_LOGIN);
                     c.userconnection = connection;
@@ -107,13 +109,13 @@ exports.onWebsocketUserDisconnect = (connection) => {
 }
 
 function getCartByConnection(connection) {
-    for(var c of index.carts)
-        if(c.socketconnection == connection) return c;
+    for(var id in index.carts)
+        if(index.carts[id].socketconnection == connection) return c;
     return null;
 }
 
 function getCartByUser(connection) {
-    for(var c of index.carts)
-        if(c.userconnection == connection) return c;
+    for(var id in index.carts)
+        if(index.carts[id].userconnection == connection) return c;
     return null;
 }

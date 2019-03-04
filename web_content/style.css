@@ -107,6 +107,7 @@ body {
 
 #loading>p{
     padding-top: 100px;
+    text-align: center;
 }
 
 /*
@@ -173,4 +174,14 @@ body {
 
 #content.show > #break{
     bottom: 0;
+}
+
+h1{
+    font-size: 3vh;
+    width: 100%;
+    text-align: center;
+    color: var(--text);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 200;
+    padding-top: 10px;
 }
