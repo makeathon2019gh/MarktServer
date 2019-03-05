@@ -1,0 +1,31 @@
+{
+    "name": "marktserver",
+    "description": "The software running on the central market server.",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/makeathon2019gh/MarktServer.git"
+    },
+    "author": "Andreas May",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/makeathon2019gh/MarktServer/issues"
+    },
+    "homepage": "https://github.com/makeathon2019gh/MarktServer#readme",
+    "dependencies": {
+      "debug": "^2.6.9",
+      "is-typedarray": "^1.0.0",
+      "mime-db": "^1.38.0",
+      "mime-types": "^2.1.22",
+      "ms": "^2.0.0",
+      "nan": "^2.12.1",
+      "typedarray-to-buffer": "^3.1.5",
+      "websocket": "^1.0.28",
+      "yaeti": "^0.0.6"
+    }
+  }
+  
