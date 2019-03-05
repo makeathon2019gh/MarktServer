@@ -1,9 +1,9 @@
-#MarktServer
+# MarktServer
 The software running on the central market server.
 
-##Running the server
+## Running the server
 
-###Installation
+### Installation
 
 The server reqires Node.js to run. You can download it here.
 
@@ -15,7 +15,7 @@ git clone https://github.com/makeathon2019gh/MarktServer.git
 npm install
 ```
 
-###Starting
+### Starting
 
 Navigate to the installation folder via ```cd <installation-path>```
 
