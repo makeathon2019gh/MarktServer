@@ -9,9 +9,10 @@ The server reqires Node.js to run. You can download it here.
 
 After installing Node.js, use the following commands to install the server
 
-```
+```shell
 cd <installation-path>
 git clone https://github.com/makeathon2019gh/MarktServer.git
+cd MarktServer/
 npm install
 ```
 
@@ -19,7 +20,11 @@ npm install
 
 Navigate to the installation folder via ```cd <installation-path>```
 
-To (re)start the server use ```node .```
+To (re)start the server use
+
+```shell
+node .
+```
 
 ## Files
 **index.js** Node.js main
