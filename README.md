@@ -5,7 +5,7 @@ The software running on the central market server.
 
 ### Installation
 
-The server reqires Node.js to run. You can download it here.
+The server reqires [Node.js](https://nodejs.org/) to run. You can download it [here](https://nodejs.org/download).
 
 After installing Node.js, use the following commands to install the server
 
