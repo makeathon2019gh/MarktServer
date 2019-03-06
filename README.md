@@ -27,7 +27,10 @@ node .
 ```
 
 ## Files
+
 **index.js** Node.js main
+
+**logic.js** The core logic
 
 **httpUtils.js** Some http utils
 

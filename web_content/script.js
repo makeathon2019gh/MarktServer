@@ -4,6 +4,7 @@ const DONE = 'DONE';
 const MESSAGE = 'MESSAGE';
 const AUTH_STATUS = 'AUTH_STATUS';
 const NEW_LOGIN = 'NEW_LOGIN';
+const DEST_REACHED = 'DEST_REACHED';
 
 // Client -> Server
 const AUTH = 'AUTH';
@@ -77,6 +78,10 @@ function initSocket(reconnect = false){
 
             case NEW_LOGIN:
                 window.location = './newlogin';
+                break;
+
+            case DEST_REACHED:
+                // TODO
                 break;
         }
     };

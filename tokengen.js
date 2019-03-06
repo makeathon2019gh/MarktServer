@@ -2,7 +2,7 @@ const valid_tokens = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345
 const token_length = 16;
 
 exports.make = () => {
-    return "a"; //TODO
+    return "A83HnDji821j43Ne"; // TODO REMOVE; Using a static token because the RFID chip does not work
     var out = "";
     for(var i = 0; i < token_length; i++)
         out += randChar();

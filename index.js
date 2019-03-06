@@ -4,13 +4,13 @@ const mime = require('mime-types');
 const url = require('url');
 const readline = require('readline');
 
-var WebSocketServer = require('websocket').server;
+const WebSocketServer = require('websocket').server;
 
-var httpUtils = require('./httpUtils');
-var tokengen = require('./tokengen');
-var logic = require('./logic');
-var config = require('./config.json');
-var cartlist = require('./cartlist.json');
+const httpUtils = require('./httpUtils');
+const tokengen = require('./tokengen');
+const logic = require('./logic');
+const config = require('./config.json');
+const cartlist = require('./cartlist.json');
 
 
 
@@ -38,18 +38,19 @@ console.log(`Websocket started`);
 initReadline();
 
 // TODO REMOVE; test only
-console.log("http://localhost:8080/?token=" + carts["testWagen"].ready())
+console.log('http://localhost:80/?token=' + carts['testWagen'].ready());
 
 
 
 /** Initialises the carts */
-function initCarts(){
-    for(var c of cartlist){
+function initCarts() {
+    for (var c of cartlist) {
         carts[c.name] = {
             clientsecret: c.secret,
             authtoken: '',
             socketconnection: null,
             userconnection: null,
+            lasttarget: 20, //TODO
             newToken: function() { // Assigns this cart a new auth token, kicking out all connected devices
                 this.authtoken = tokengen.make();
                 this.syncToken();
@@ -61,7 +62,7 @@ function initCarts(){
                 return this.authtoken;
             },
             syncToken: function() { // Sends the server sided token to the client (if client is connected yet)
-                this.socketconnection && this.socketconnection.sendUTF('NEW TOKEN ' + this.authtoken);
+                this.socketconnection && this.socketconnection.sendUTF('NEW_TOKEN=' + this.authtoken);
             },
             checkout: function() { // Is called as the cart reaches the checkout, kicking the user out and setting the cart to autopilot
                 return this.clearToken();
@@ -87,42 +88,47 @@ function initWebServer(port, pagespath) {
         // User recognition
         var operating = null;
         var cookies = httpUtils.parseCookies(req);
-        if(cookies.auth) {
-            for(var c in carts) {
-                if(carts[c].authtoken == cookies.auth)
+        if (cookies.auth) {
+            for (var c in carts) {
+                if (carts[c].authtoken == cookies.auth)
                     operating = carts[c];
             }
         }
 
         // Do token handling
         var cookiesout = '';
-        if(reqpath == '/index.html'){
-            if(uri.query.token !== undefined){
+        if (reqpath == '/index.html'){
+            if (uri.query.token !== undefined){
                 cookiesout += `auth=${uri.query.token};`
 
-                for(var c in carts) {
-                    if(carts[c].authtoken == uri.query.token) 
+                for (var c in carts) {
+                    if (carts[c].authtoken == uri.query.token) 
                         operating = carts[c];
                 }
             }
         }
 
+        // Redirects to about page
+        //if (reqpath == '/index.html') httpUtils.redirect(res, '/about');
+
         // Redirects if a not authenticated user tries to use auth-only pages
-        if(!operating && !(reqpath.includes('/noauth') || reqpath.includes('/done'))) httpUtils.redirect(res, '/noauth');
+        /*else*/ if (!operating && !(reqpath.includes('/noauth') || reqpath.includes('/done') || reqpath.includes('/noauth') || reqpath.includes('/about'))) httpUtils.redirect(res, '/noauth');
     
         // Reading the requested file or - if it doesnot exist - 404.html
-        var path = pagespath + reqpath;
-        if (!fs.existsSync(path))
-            path = `${pagespath}/404.html`;
-        var content = fs.readFileSync(path, 'utf8');
-        
-        // Send out response
-        var type = mime.lookup(path);
-        res.writeHead(200, {
-            'Set-Cookie': cookiesout,
-            'Content-Type': type
-        });
-        res.end(content);
+        else {
+            var path = pagespath + reqpath;
+            if (!fs.existsSync(path))
+                path = `${pagespath}/404.html`;
+            var content = fs.readFileSync(path, 'utf8');
+            
+            // Send out response
+            var type = mime.lookup(path);
+            res.writeHead(200, {
+                'Set-Cookie': cookiesout,
+                'Content-Type': type
+            });
+            res.end(content);
+        }
     }).listen(port);
 }
 
@@ -151,13 +157,13 @@ function initWebSocket(server) {
 }
 
 /** Initialates readline in order to listen to console input */
-function initReadline(){
+function initReadline() {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
     rl.on('line', (input) => {
-        try{
+        try {
             if (input.startsWith('c')) { // Message to cart
                 var name = input.split(' ')[1];
                 var c = carts[name];
@@ -167,12 +173,13 @@ function initReadline(){
                 var name = input.split(' ')[1];
                 var c = carts[name];
                 if(c.userconnection == null) return;
-                c.userconnection.send(input.substring(3 + c.name.length));
+                c.userconnection.send(input.substring(3 + name.length));
             } else {
                 console.log('Invalid syntax. Use <c/u> <cartname> <message>');
             }
         } catch (e) {
-            console.log("An error occured whilst processing your input!");
+            console.log('An error occured whilst processing your input!');
+            console.error('', e)
         }
     });
 }
